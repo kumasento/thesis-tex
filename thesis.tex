@@ -21,10 +21,18 @@
 % 若需在排序中实现更复杂的需求，请参考 biblatex-caspervector 的文档。
 \usepackage[backend = biber, style = caspervector, utf8, sorting = ecnty]{biblatex}
 
+% 其它依赖库
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{minted}
+\usepackage{multirow}
+
 % 按学校要求设定参考文献列表中的条目之内及之间的距离。
 \setlength{\bibitemsep}{3bp}
 % 对于 linespread 值的计算过程有兴趣的同学可以参考 pkuthss.cls。
 \renewcommand*{\bibfont}{\zihao{5}\linespread{1.27}\selectfont}
+\renewcommand{\cthesisname}{本科生毕业论文}
+\renewcommand{\ethesisname}{Undergraduate Thesis}
 
 % 设定文档的基本信息。
 \pkuthssinfo{
@@ -85,12 +93,14 @@
 	\tableofcontents
 
 	% 以下为正文部分，默认要进行章节编号。
-	\mainmatter
+	\mainmatter 
 	% 序言。
 	\include{chap/introduction}
 	% 各章节。
 	\include{chap/chap1}
 	\include{chap/chap2}
+	\include{chap/chap3}
+	\include{chap/chap4}
 	% 结论。
 	\include{chap/conclusion}
 

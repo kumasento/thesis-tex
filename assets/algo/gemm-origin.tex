@@ -1,0 +1,19 @@
+
+\begin{algorithm}
+\caption{GEMM的原始三重循环算法}
+\label{alg1}
+\algsetup{indent=2em}
+\begin{algorithmic}[1]
+\FOR{$i=0$ \TO $M$}
+  \FOR{$j=0$ \TO $N$}
+    \STATE{$sum \leftarrow \beta \times \mathtt{C[i][j]}$}
+    \FOR{$k=0$ \TO $K$}
+      \STATE{$a \leftarrow \mathtt{(TA)\ ?\ A[i][k]\ :\ A[k][i]}$}
+      \STATE{$b \leftarrow \mathtt{(TB)\ ?\ B[k][j]\ :\ B[j][k]}$}
+      \STATE{$sum \leftarrow \alpha \times a \times b$} 
+    \ENDFOR
+    \STATE{$\mathtt{C[i][j]} \leftarrow sum$}
+  \ENDFOR
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}

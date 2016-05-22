@@ -1,0 +1,16 @@
+\begin{algorithm}
+\caption{GEMM的分块矩阵算法}
+\begin{algorithmic}[1]
+\FOR{$bi = 0$ \TO $\lceil M/BLK\_M \rceil$}
+  \FOR{$bj = 0$ \TO $\lceil N/BLK\_N \rceil$}
+    \STATE{$\mathbf{S} \leftarrow \beta \times \mathbf{C}_{bi,bj}$}   
+    \FOR{$bk = 0$ \TO $\lceil K/BLK\_K \rceil$}
+      \STATE{$\mathbf{A}_b \leftarrow \mathbf{A}_{bi,bk}$ or transposed $\mathbf{A}_{bk,bi}^T$}
+      \STATE{$\mathbf{B}_b \leftarrow \mathbf{B}_{bk,bj}$ or transposed $\mathbf{B}_{bj,bk}^T$}
+      \STATE{$\mathbf{S} \leftarrow \alpha \times \mathbf{A}_b \times \mathbf{B}_b + \mathbf{S}$}
+    \ENDFOR
+    \STATE{$\mathbf{C}_{bi,bj} \leftarrow \mathbf{S}$}
+  \ENDFOR
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
