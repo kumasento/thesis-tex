@@ -1,5 +1,6 @@
 \begin{algorithm}
 \caption{GEMM的分块矩阵算法}
+\label{alg:gemmblocking}
 \begin{algorithmic}[1]
 \FOR{$bi = 0$ \TO $\lceil M/BLK\_M \rceil$}
   \FOR{$bj = 0$ \TO $\lceil N/BLK\_N \rceil$}

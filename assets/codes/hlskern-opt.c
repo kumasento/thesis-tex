@@ -1,18 +1,23 @@
-float tmp_LUT, tmp_DSP, tmp; 
+float tmp_LUT, res_LUT, tmp; 
 #pragma HLS resource variable=tmp_LUT core=FAddSub_nodsp
-#pragma HLS resource variable=tmp_DSP core=FAddSub_fulldsp
-for (k = 0; k < LUT_RANGE; k ++) {
-  res = ALPHA * A[i][k] * B[k][j];
-  tmp_LUT = res + sum;
+#pragma HLS resource variable=res_LUT core=FMul_nodsp
+FullLoop: for (k = 0; k < GEMM_FULL_UPPER; k ++) {
+  res = A[i][k] * B[k][j];
+  tmp = sum + res;
+  sum = dsp;
+}
+TmpLUTLoop: for (k = GEMM_FULL_UPPER; k < GEMM_TMPLUT_UPPER; k ++) {
+  res = A[i][k] * B[k][j];
+  tmp_LUT = sum + res;
   sum = tmp_LUT;
 }
-for (k = LUT_RANGE; k < DSP_RANGE; k ++) {
-  res = ALPHA * A[i][k] * B[k][j];
-  tmp_DSP = res + sum;
-  sum = tmp_DSP;
+ResLUTLoop: for (k = GEMM_TMPLUT_UPPER; k < GEMM_RESLUT_UPPER; k ++) {
+  res_LUT = A[i][k] * B[k][j];
+  tmp = sum + res_LUT;
+  sum = tmp;
 }
-for (k = DSP_RANGE; k < DIM; k ++) {
-  res = ALPHA * A[i][k] * B[k][j];
-  tmp_DSP = res + sum;
-  sum = tmp_DSP;
+FullLUTLoop: for (k = GEMM_RESLUT_UPPER; k < DIM_K; k ++) {
+  res_LUT = A[i][k] * B[k][j];
+  tmp_LUT = sum + res_LUT;
+  sum = tmp_LUT;
 }

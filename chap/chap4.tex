@@ -1,10 +1,10 @@
-\chapter{测试结果}
+\chapter{实验结果}
 
 本章对SoCaffe的性能进行测试，首先给出GEMM加速器的独立测试结果，接着给出综合的SoCaffe性能测试。GEMM测试中主要包含GEMM设计过程中的各种优化策略的对比，从硬件资源使用和性能两个角度分析；以及包含与运行于CPU的OpenBLAS的性能对比。SoCaffe测试首先使用Caffe的单元测试对Caffe的功能进行测试，给出一些关键计算的运行时间；之后使用\texttt{convnet-benchmarks}\footnote{\url{https://github.com/pku-ceca-research/convnet-benchmarks}}作为基准进行卷积层的性能测试；最终通过两个深度学习应用：MNIST与CIFAR-10网络对SoCaffe进行整体评估。
 
 \section{GEMM测试}
 
-\subsection{优化策略对比}
+\subsection{优化策略对比}\label{subsec:compare}
 
 \begin{figure}[!ht]
 \centering	
