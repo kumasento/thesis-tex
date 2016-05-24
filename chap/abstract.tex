@@ -2,11 +2,26 @@
 % Public domain.
 
 \begin{cabstract}
-	\pkuthssffaq % 中文测试文字
+近年来，深度学习与神经网络领域飞速发展，并逐渐应用于无人机、自动驾驶汽车等平台。这类平台使用嵌入式设备进行计算，对功耗、算法的实时性、计算资源都有一定的限制，与传统的深度学习应用所依赖的GPU或者集群在性能上相差甚远。因此直接移植深度学习应用到嵌入式设备有很大的难度。
+
+本研究实现了SoCaffe—一个基于Caffe与和Zynq SoC的深度学习框架。
+Caffe作为最流行的CPU/GPU深度学习框架之一，效率高、配置简单，并为大部分研究人员所熟悉。Zynq SoC是Xilinx公司推出的“全可编程”嵌入式开发平台，搭载高效的ARM Cortex-A9双核CPU与Xilinx FPGA，能同时满足计算性能与功耗比的要求。
+
+本研究综合考虑了Zynq SoC平台的特点与Caffe的计算特性，对Caffe的功能进行软硬件逻辑划分，挑选Caffe中密集使用的GEMM计算作为FPGA加速的目标。针对GEMM的硬件逻辑设计，本研究对其性能进行了细致的分析和数学建模，从硬件资源占用与延迟两个角度进行了充分的优化，达到了相对于软件版本5.4x加速比和最高12.31GFLOPS的性能。同时，本研究生成的SoCaffe框架的功能基本与Caffe完全一致，基于其他硬件平台的Caffe应用可以直接移植到Zynq SoC上实现。最后，SoCaffe的整体计算性能也有最高2.34x的加速比。此外，本研究完全基于Xilinx新推出的SDSoC开发平台进行软硬件协同设计，大大提升了开发效率。
+
+综上，SoCaffe同时拥有Zynq SoC平台的高性能与Caffe框架的通用性和易用性，是针对嵌入式平台深度学习应用开发的实际解决方案，具有一定的实用价值。
+
 \end{cabstract}
 
 \begin{eabstract}
-	Test of the English abstract.
+Deep Learning and Neural Network is rapidly developing recently, and has been gradually applied to Unmanned Vechicles, such as drones and autonomous cars. Compared with normally used GPU and clusters, these platforms can only use embedded devices to compute, which have many restrictions on power comsumption, calculation latency and computation resources. Therefore, deploying deep learning application on embbeded devices is very difficult.
+
+SoCaffe, a deep learning framework based on Caffe and Zynq SoC is implemented in this thesis. As one of the most famous CPU/GPU based deep learning framework, Caffe is efficient, easy-to-use, and famous to most deep learning researchers. Zynq-7000 All Programmable SoC (APSoC) is composed of Dual-core ARM Cortex-A9 CPU and Xilinx FPGA, which can fulfill requirements on computation efficiency and power consumption.
+
+Targeting at high performance, this thesis partitions Caffe's functionalities into software and hardware parts, mainly accelerates GEMM computation on FPGA. By applying detailed analysis and mathematical model, GEMM design is well optimised in resource usage and latency, and finally achieves 5.4x speed-up ratio and 12.31 GFLOPS. Meanwhile, SoCaffe has the same functionalities as original Caffe, Caffe applications based on other platforms can be easily adapted to Zynq SoC. Convolution computation in Caffe also has 2.34x speed-up. Moreover, SoCaffe is completely developed by Xilinx SDSoC, which has greatly boosted the development process.
+
+In a word, SoCaffe benefits from Zynq SoC's high performance and Caffe's efficiency, and is able to be applied in real-world embbeded devices deep learning applications.
+
 \end{eabstract}
 
 % vim:ts=4:sw=4

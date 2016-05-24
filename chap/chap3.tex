@@ -1,4 +1,4 @@
-\chapter{主体工作}
+\chapter{SoCaffe实现}
 
 从上述整体设计出发，本研究的主要实现了SoCaffe — 一个基于深度学习框架Caffe并能运行于任一基于Zynq架构的嵌入式SoC设备上的深度学习框架。SoCaffe的名称来源于SoC与Caffe的结合。
 
@@ -498,7 +498,7 @@ SoCaffe在处理系统上的工作（如图\ref{fig:socaffe}）主要分为三�
 % TODO 之后实现
 % 在进行GEMM计算的同时，CPU端往往处于空闲状态。如果此时可以进行一些比较耗时的操作，比如复制数据到矩阵块缓冲区等等，那么系统性能可以得到不错的提升。SDSoC提供了预编译指令\texttt{async <ID>}，用来标识硬件函数需要被异步调用；同时也提供了\texttt{wait <ID>}指令来指定等待硬件函数完成的时间点；其中\texttt{<ID>}用来对异步调用任务进行标记。这种异步机制本质上而言构建了FPGA与CPU之间的流水线，提高了系统的并行度。
 
-正如本节序言所述，GEMM加速器是针对固定大小的矩阵块实现的，因此无法根据输入矩阵的形状进行调整。尤其是当输入矩阵形状非常不规律时，比如一条边很短（$\sim 10$）而另一些边很长（$\geq 1000$）时，使用GEMM加速器会带来非常大的性能损耗。本研究使用一种简单条件来判断是否应该执行GEMM：只有当输入矩阵的三个尺寸都大于128\footnote{128的数值主要根据第4章中对OpenBLAS的对比测试得到，当矩阵尺寸大于128时，GEMM加速器相对于OpenBLAS的性能才有了明显提升}时才调用GEMM加速器（如代码\ref{lst:caffegemm}所示，其中当定义了\texttt{SDS}时才会编译\texttt{gemm\_sds}接口），否则使用CPU端的BLAS库。
+正如本节序言所述，GEMM加速器是针对固定大小的矩阵块实现的，因此无法根据输入矩阵的形状进行调整。尤其是当输入矩阵形状非常不规律时，比如一条边很短（$\sim 10$）而另一些边很长（$\geq 1000$）时，使用GEMM加速器会带来非常大的性能损耗。本研究使用一种简单条件来判断是否应该执行GEMM：只有当输入矩阵的三个尺寸都大于64\footnote{64的数值主要根据第4章中对OpenBLAS的对比测试得到，当矩阵尺寸大于64时，GEMM加速器相对于OpenBLAS的性能才有了明显提升}时才调用GEMM加速器（如代码\ref{lst:caffegemm}所示，其中当定义了\texttt{SDS}时才会编译\texttt{gemm\_sds}接口），否则使用CPU端的BLAS库。
 
 \begin{listing}[!ht]
 \input{assets/codes/caffegemm.tex}
