@@ -7,7 +7,7 @@
 
 \section{Zynq平台}
 
-Zynq平台的全称是“全可编程SoC”（All Programmable SoC），由双核的ARM Cortex-A9处理系统（Processing System，简称PS）与Xilinx可编程逻辑（Programmable Logic，简称PL）组成。除此以外，还包含片上内存（On-chip memory），外部内存接口（External Memory Interface），各类外围设备输入输出接口（I/O Peripherals and Interfaces）以及连接PS与PL的高速AXI总线等等。
+Zynq平台的全称是“全可编程SoC”（All Programmable SoC）\supercite{ds190}，由双核的ARM Cortex-A9处理系统（Processing System，简称PS）与Xilinx可编程逻辑（Programmable Logic，简称PL）组成。除此以外，还包含片上内存（On-chip memory），外部内存接口（External Memory Interface），各类外围设备输入输出接口（I/O Peripherals and Interfaces）以及连接PS与PL的高速AXI总线等等。
 
 本研究基于Zynq平台的最新系列Zynq-7000进行系统设计与实现。
 
@@ -32,9 +32,10 @@ Zynq SoC系统上搭载了双核ARM Cortex-A9 MPCore处理器，该处理器可�
 Zynq的可编程逻辑（PL）与一般的FPGA设计一致，主要包含CLB，BRAM以及DSP处理单元。相关指标如下表所示：
 
 \begin{table}[!ht]
-\begin{tabular}{ | p {3cm} | l | l | l | l | }
+\centering
+\begin{tabular}{ | l | l | l | l | l | }
 \hline
-Programmable Logic Cells & LUTs & Flip-Flops & BRAMs & DSP Slices \\ \hline
+Logic Cells & LUTs & Flip-Flops & BRAMs & DSP Slices \\ \hline
 85K & 53,200 & 106,400 & 560 KB & 220 \\
 \hline
 \end{tabular}
@@ -47,7 +48,8 @@ Programmable Logic Cells & LUTs & Flip-Flops & BRAMs & DSP Slices \\ \hline
 
 存储系统与数据通路负责连接处理系统与可编程逻辑，以及处理和其他外围设备通信。Zynq平台的存储系统主要由三个部分组成：处理系统中的缓存（L1与L2 cache）和片上内存（On-chip Memory）；可编程逻辑上的BRAM；以及大容量的外部存储（External Memory）。Zynq上的几种数据通路可以完成这三个组成部分之间的不同形式的交互。
 
-Zynq上的数据通路的基础是ARM的AXI（Advanced eXtensible Interface）总线协议，属于AMBA（Advanced Microcontroller Bus Architecture）协议的一部分。AXI的最新版本是AXI4协议，Xilinx设计并实现了基于AXI4的IP核，使得AXI变得更加灵活、高效和便捷。AXI4协议主要有三类：针对大数据量传输的AXI4，小数据量的AXI4-Lite，以及针对流数据的AXI4-Stream。Zynq上的数据通路正是基于Xilinx提供的AXI IP核实现的。
+Zynq上的数据通路的基础是ARM的AXI（Advanced eXtensible Interface）\supercite{ug761}总线协议，属于AMBA（Advanced Microcontroller Bus Architecture）协议的一部分。
+AXI的最新版本是AXI4协议，Xilinx设计并实现了基于AXI4的IP核，使得AXI变得更加灵活、高效和便捷。AXI4协议主要有三类：针对大数据量传输的AXI4，小数据量的AXI4-Lite，以及针对流数据的AXI4-Stream。Zynq上的数据通路正是基于Xilinx提供的AXI IP核实现的。
 
 Zynq基于AXI总线协议连接处理系统和可编程逻辑，主要实现两类接口：高性能AXI端口（High-Performance AXI ports）与ACP（Accelerator Coherency Port）接口，二者区别关键在内存数据一致性上。高性能AXI端口可以实现处理系统和可编程逻辑高速的数据传输，但不保证CPU缓存中的数据与内存读写一致。ACP接口则在硬件机制上保证缓存中的数据在传输之前被写回内存、内存更新之后缓存同步更新。
 
@@ -61,11 +63,12 @@ Linux模式首先启动预先加载与ROM中的引导程序，该程序从SD卡�
 Xilinx提供了bootgen工具来创建SD卡引导程序，以及一系列预生成的文件，例如Linux镜像，根系统文件等等。SDSoC工具中包含了bootgen，以及更多跟硬件平台相关的预生成文件，可以更简便地生成SD卡中需要的内容。在2.3节中会进一步介绍。
 
 \subsection{Zedboard}
-本研究选用的是Zedboard作为Zynq开发平台。Zedboard是基于Zynq-7000系列的扩展式处理平台，Zedboard上除了满足Zynq-7000所要求的ARM Cortex-A9 MPCore处理器与Xilinx FPGA之外，还增加了如下配置：512MB DDR3内存、256MB QSPI闪存和一系列输入输出接口（HDMI、VGA、OLED与音频接口）等等。除此以外，Zedboard成本低廉，还有Xilinx SDSoC的特别支持，尤其是预先搭载好的输入输出接口对深度学习应用的开发（计算机视觉等应用）非常方便。因此本研究使用Zedboard作为最终深度学习框架所运行的平台。
+本研究选用的是Zedboard作为Zynq开发平台。Zedboard\supercite{zed}是基于Zynq-7000系列的扩展式处理平台，Zedboard上除了满足Zynq-7000所要求的ARM Cortex-A9 MPCore处理器与Xilinx FPGA之外，还增加了如下配置：512MB DDR3内存、256MB QSPI闪存和一系列输入输出接口（HDMI、VGA、OLED与音频接口）等等。除此以外，Zedboard成本低廉，还有Xilinx SDSoC的特别支持，尤其是预先搭载好的输入输出接口对深度学习应用的开发（计算机视觉等应用）非常方便。因此本研究使用Zedboard作为最终深度学习框架所运行的平台。
 
 \section{SDSoC开发环境}
 
-Xilinx于2015年3月推出了SDSoC开发环境，提供类似于嵌入式C/C++开发体验。SD即“软件定义”（Software Defined）：SDSoC的目标是降低FPGA应用开发门槛，让更多的软件开发者，而不是专业的FPGA开发人员，可以通过C/C++代码直接生成Zynq SoC系统。此外，SDSoC综合了Vivado HLS，Xilinx ARM GNU编译工具链，以及一系列系统生成工具（bootgen, Xillybus等等），令开发效率得到很大提升。但是SDSoC的最大优势在于其对传统SoC开发流程的改进。接下来主要介绍SDSoC的开发流程与基本使用方式。
+Xilinx于2015年3月推出了SDSoC开发环境，提供类似于嵌入式C/C++开发体验。SD即“软件定义”（Software Defined）\supercite{sdsoc}：
+SDSoC的目标是降低FPGA应用开发门槛，让更多的软件开发者，而不是专业的FPGA开发人员，可以通过C/C++代码直接生成Zynq SoC系统。此外，SDSoC综合了Vivado HLS，Xilinx ARM GNU编译工具链，以及一系列系统生成工具（bootgen, Xillybus等等），令开发效率得到很大提升。但是SDSoC的最大优势在于其对传统SoC开发流程的改进。接下来主要介绍SDSoC的开发流程与基本使用方式。
 
 \begin{figure}[!ht]
 \centering
@@ -80,7 +83,8 @@ Xilinx于2015年3月推出了SDSoC开发环境，提供类似于嵌入式C/C++�
 \subsection{基本概念与使用方式}
 
 \subsubsection{数据移动网络}
-SDSoC开发环境关键概念是数据移动网络（data motion network），表示PS与PL之间的数据通路模式：SDSoC使用预先设计好的数据通路IP核来负责PS与PL之间的数据传输，这些IP核称为数据移动单元（data mover）。比如AXIDMA\_SG就表示通过AXI总线用Scatter-Getter的方式通过DMA传输数据。数据移动单元与数据类型密切相关，标量数据只能用AXI\_LITE传输，而数组与更复杂的数据类型可以用AXI\_DMA\_SG，AXI\_DMA\_SIMPLE，AXI\_DMA\_2D等数据传输单元传输。一般而言SDSoC可以根据数据类型，内存分配方式等分析出最适合使用的数据传输单元，但开发者也可以使用预编译指令（pragma）进行优化。
+SDSoC开发环境关键概念是数据移动网络（data motion network）\supercite{ug1027}，
+表示PS与PL之间的数据通路模式：SDSoC使用预先设计好的数据通路IP核来负责PS与PL之间的数据传输，这些IP核称为数据移动单元（data mover）。比如AXIDMA\_SG就表示通过AXI总线用Scatter-Getter的方式通过DMA传输数据。数据移动单元与数据类型密切相关，标量数据只能用AXI\_LITE传输，而数组与更复杂的数据类型可以用AXI\_DMA\_SG，AXI\_DMA\_SIMPLE，AXI\_DMA\_2D等数据传输单元传输。一般而言SDSoC可以根据数据类型，内存分配方式等分析出最适合使用的数据传输单元，但开发者也可以使用预编译指令（pragma）进行优化。
 
 \begin{figure}[!ht]
 \centering
@@ -114,21 +118,22 @@ Caffe的软件架构主要包含如下几个部分，依赖关系具有清晰的
 \begin{enumerate}
 \item 基础架构：数据类型的定义，比如blob.cpp定义了Blob数据结构，net.cpp与layer.cpp分别定义了网络类与网络层类。同时常用数学函数math\_functions.cpp也十分重要，Caffe的各种大运算量的计算基本都会调用该文件所定义的函数。
 \item 网络层的实现：在layers/目录下定义了常见的神经网络层的实现，比如卷积神经网络conv\_layer.cpp，ReLU层relu\_layer.cpp等等。相关GPU代码也包含其中。
-\item 求解器实现：在solvers/目录下定义了多种求解器。
+\item 求解器实现：在solvers/目录下定义了多种求解器，比如SGD求解算法。
 \item 其他：比如Caffe使用的Protobuf文件等等。
 \end{enumerate}
 
 \subsection{第三方库依赖}
 Caffe所依赖的第三方库不多，可以简单分为如下几类：
 \begin{enumerate}
-\item 数据存储：LMDB与LevelDB
-\item 数据格式和接口：HDF5与Protobuf
-\item 数学计算：BLAS库比如ATLAS或OpenBLAS
-\item 其他：比如日志Google glog，基础组件Boost 等等
+\item 数据存储：
+Caffe使用LMDB\footnote{即Lightning Memory-Mapped Database，提供键值存储，使用B+Tree实现。\url{https://symas.com/products/lightning-memory-mapped-database/}}与
+LevelDB\footnote{LevelDB也是一个轻量的存储库，由Google开发，使用LSM树算法\url{(http://leveldb.org/)}}两种存储形式对数据进行保存。
+\item 数据格式和接口：
+HDF5\footnote{HDF5主要用来定义复杂的数据模型\url{https://www.hdfgroup.org/HDF5/}}与Protobuf
+\item 数学计算：BLAS运算库
+\item 其他：比如日志、基础组件等等
 \end{enumerate}
 
 总之，Caffe的分层设计和简单的第三方库依赖都非常便于优化和修改。本研究针对Caffe的移植与优化在第三章中详述。
-
-\section{综合设计方案}
 
 

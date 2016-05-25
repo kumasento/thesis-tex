@@ -96,4 +96,11 @@ MNIST测试主要包含两个部分：性能测试与精度测试，性能测试
 
 在\ref{fig:caffeconv}中表现优异的半精度浮点数的设计在MNIST网络中效率最低，主要是因为设置的96大小的矩阵块会在MNIST网络中造成过多的额外计算。表现最好的是Latency版本，但是与原始的OpenBLAS实现都相差不大。精度测试结果反映出所有的实现都拥有与标准实现一致的准确率，半精度浮点测试也如此，尽管半精度浮点数确实与单精度浮点数相比存在一定的误差。
 
+\begin{figure}[!ht]
+	\centering	
+	\includegraphics[width=\textwidth]{assets/imgs/mnist.pdf}
+	\caption{MNIST网络性能与精度测试}
+	\label{fig:mnist}
+\end{figure}
+
 总之，MNIST测试的结果主要反映出对于小规模的网络，加速比确实不够明显，而且并不是矩阵块越大效率越高：小规模的网络中额外计算占据的时间比更高。此外，半精度浮点数至少对于MNIST网络而言是完全没有准确率问题。其他网络在使用之前应先测试准确率。
