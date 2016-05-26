@@ -4,7 +4,7 @@
 
 GEMM测试主要包含GEMM设计过程中的各种优化策略的对比，并且从硬件资源使用和性能两个角度分析。此外，通过GEMM硬件版本与OpenBLAS的CPU版本的不同矩阵块尺寸下的对比，分析得到Caffe调用GEMM硬件操作的最佳时机。
 
-综合SoCaffe测试分别测试了功能的完整性、计算速度与二者的综合。功能的完整性通过Caffe自带的单元测试进行分析；之后使用\texttt{convnet-benchmarks}\footnote{\url{https://github.com/pku-ceca-research/convnet-benchmarks}}作为基准进行卷积层的性能测试；最终，使用MNIST这一应用对SoCaffe进行整体评估。
+综合SoCaffe测试分别测试了功能的完整性、计算速度与二者的综合。功能的完整性通过Caffe自带的单元测试进行分析；之后使用修改过的\texttt{convnet-benchmarks}\footnote{\url{https://github.com/pku-ceca-research/convnet-benchmarks}}作为基准进行卷积层的性能测试；最终，使用MNIST这一应用对SoCaffe进行整体评估。
 
 \section{实验环境}
 
@@ -90,7 +90,7 @@ Caffe的单元测试使用Google Test测试框架\footnote{Google Test\url{(http
 
 MNIST(Mixed National Institute of Standards and Technology)数据集包含大量手写字迹图片数据，常用作对机器学习算法的测试。LeNet\supercite{lecun1998gradient}是基于MNIST一种神经网络结构，因为它的网络结构比较小，并且包含了卷积层、池化层、全连接层和ReLU层，在网络层类型上也比较完整，所以本研究选用MNIST作为真实案例进行测试。
 
-MNIST实现起来很简单，根据Caffe官方教程即可轻易搭建\footnote{\url{(http://caffe.berkeleyvision.org/gathered/examples/mnist.html)}}。由于在板上训练耗费内存较多，而且效率不高，因此训练过程在GPU主机完成，之后把训练结果复制到板上使用。
+MNIST实现起来很简单，根据Caffe官方教程即可轻易搭建\footnote{\url{http://caffe.berkeleyvision.org/gathered/examples/mnist.html}}。由于在板上训练耗费内存较多，而且效率不高，因此训练过程在GPU主机完成，之后把训练结果复制到板上使用。
 
 MNIST测试主要包含两个部分：性能测试与精度测试，性能测试使用\texttt{time}命令，精度测试使用\texttt{test}搭配之前的训练结果使用。得到的测试结果图\ref{fig:mnist}所示。
 
