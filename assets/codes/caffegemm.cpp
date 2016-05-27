@@ -8,7 +8,7 @@ void caffe_cpu_gemm<float>(const CBLAS_TRANSPOSE TransA,
   int TA  = (TransA == CblasNoTrans) ? 0 : 1;
   int TB  = (TransB == CblasNoTrans) ? 0 : 1;
 #ifdef SDS
-  if (M >= 128 && N >= 128 && K >= 128) 
+  if (M >= GEMM_THRESHOLD_M && N >= GEMM_THRESHOLD_N && K >= GEMM_THRESHOLD_K) 
     gemm_sds(TA, TB, M, N, K, alpha,
         (float *)A, lda, (float *)B, ldb, beta, (float *)C, N);
   else
